@@ -58,6 +58,10 @@ foreach($DB in $DBList){
 
 
 git status
+Write-Output "Please run the following commands in order if there are any pending changes."
+Write-Output "git add ."
+Write-Output "git commit -m ""Description""
+Write-Output "git push"
 #git add .
 #git commit -m "Script Update"
 #git push
