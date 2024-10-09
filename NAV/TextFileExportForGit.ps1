@@ -23,6 +23,10 @@ $DBServer = "navdb.domain.com.com"
 $DBList = @("NAVBC", "NAVBCDEV", "NAVBCQA")  # Names of NAV databases
 $TypeList = @("Codeunit", "MenuSuite", "Page", "Query", "Report", "Table", "XMLport") #objects to export
 
+$scriptLocation = Split-Path -Parent $MyInvocation.MyCommand.Path
+Set-Location -Path $scriptLocation
+Get-Location
+
 git reset --hard # discard all local changes and pull the latest changes from the remote repository
 git pull    # pull the latest changes from the remote repository
 
@@ -31,6 +35,7 @@ foreach($DB in $DBList){
         $FileName = $DB + "-" + $Type + ".txt"
         $folderPath = ".\CAL-$DB\$Type"
         $Filter = "Type=" + $Type
+        New-Item -ItemType Directory -Force -Path $folderPath
         Remove-Item $folderPath\* -Force
         Export-NAVApplicationObject .\$FileName -DatabaseServer $DBServer -DatabaseName $DB -ExportTxtSkipUnlicensed -Filter $Filter
         Split-NAVApplicationObjectFile -Source .\$FileName -Destination $folderPath
